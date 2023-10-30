@@ -4,6 +4,7 @@ import fr.eni.airport.bo.Avion;
 import fr.eni.airport.bo.Personne;
 import fr.eni.airport.dal.AvionDAO;
 import fr.eni.airport.dal.PersonneDAO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class AvionManagerImpl implements AvionManager{
     @Autowired
     PersonneDAO personneRepository;
 
+    @Transactional
     @Override
     public void embarquerPassager(Integer personneId, Integer avionId) {
         Personne passager = personneRepository.findById(personneId).orElse(null);
@@ -30,6 +32,8 @@ public class AvionManagerImpl implements AvionManager{
         }
     }
 
+    @Transactional
+    @Override
     public void debarquerPassagers(Integer idAvion) {
         Avion avion = avionRepository.findById(idAvion).orElse(null);
 
@@ -43,15 +47,19 @@ public class AvionManagerImpl implements AvionManager{
     }
 
     @Override
+    @Transactional
     public List<Avion> getListeAvions() {
         return (List<Avion>) avionRepository.findAll();
     }
     @Override
+    @Transactional
     public List<Personne> getListePersonnes() {
         return (List<Personne>) personneRepository.findAll();
     }
 
 
+    @Transactional
+    @Override
     public void creerDonneesDeTest() {
         Avion avion1 = new Avion("ABC123", "Boeing", 747);
         Avion avion2 = new Avion("XYZ789", "Airbus", 380);
@@ -73,11 +81,5 @@ public class AvionManagerImpl implements AvionManager{
         personneRepository.save(personne3);
         personneRepository.save(personne4);
         personneRepository.save(personne5);
-
-
-
-
     }
-
-
 }
