@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste Avions / Passagers </title>
+</head>
+<body>
+
+<h1>Liste des Avions</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Code</th>
+        <th>Constructeur</th>
+        <th>Modèle</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="avion : ${avions}">
+        <td th:text="${avion.code}"></td>
+        <td th:text="${avion.constructeur}"></td>
+        <td th:text="${avion.modele}"></td>
+        <td>
+            <ul>
+                <li th:each="passager : ${avion.passagers}">
+                    <span th:text="${passager.nom + ' ' + passager.prenom}"></span>
+                </li>
+            </ul>
+        </td>
+        <td>
+            <form th:action="@{'/debarquer/' + ${avion.idAvion}}" method="post">
+                <button type="submit">Débarquer tous les passagers</button>
+            </form>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+
+
+<h2>Liste de Toutes les Personnes</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Âge</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="personne : ${toutesLesPersonnes}">
+        <td th:text="${personne.nom}"></td>
+        <td th:text="${personne.prenom}"></td>
+        <td th:text="${personne.age}"></td>
+        <td>
+            <form th:object="${personne}" th:action="@{'/embarquer/' + ${personne.idPersonne}} " method="post">
+                <select name="avionId">
+                    <option th:each="avion : ${avions}" th:value="${avion.idAvion}" th:text="${avion.code}"></option>
+                </select>
+                <button type="submit">Embarquer</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
