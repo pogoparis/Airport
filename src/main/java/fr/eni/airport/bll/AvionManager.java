@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface AvionManager {
 
+    void creerAvion(Avion avion);
     void embarquerPassager(Integer idAvion, Integer idPersonne);
 
     void debarquerPassagers(Integer idAvion);

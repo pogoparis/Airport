@@ -18,6 +18,11 @@ public class AvionManagerImpl implements AvionManager{
     @Autowired
     PersonneDAO personneRepository;
 
+    @Override
+    public void creerAvion(Avion avion) {
+        avionRepository.save(avion);
+    }
+
     @Transactional
     @Override
     public void embarquerPassager(Integer personneId, Integer avionId) {
