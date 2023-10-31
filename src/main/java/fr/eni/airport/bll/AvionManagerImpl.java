@@ -41,7 +41,7 @@ public class AvionManagerImpl implements AvionManager {
 
         List<Personne> toutesLesPersonnes = getListePersonnes();
 
-        // Récupérer les personnes sans avion
+        // Les personnes sans avion
         List<Personne> personnesSansAvion = new ArrayList<>();
         for (Personne personne : toutesLesPersonnes) {
             if (personne.getAvion() == null) {
