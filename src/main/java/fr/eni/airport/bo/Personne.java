@@ -1,5 +1,6 @@
 package fr.eni.airport.bo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,6 +20,7 @@ public class Personne {
     private String prenom;
     private Integer age;
 
+    @JsonIgnore
     @ManyToOne
     private Avion avion;
 
