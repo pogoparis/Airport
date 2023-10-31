@@ -23,10 +23,10 @@
     <tr class="table-primary" th:each="avion : ${avions}">
         <td th:text="${avion.code}"></td>
         <td th:text="${avion.constructeur}"></td>
-        <td th:text="${avion.modele}"></td>
+        <td th:text="${avion.getModel}"></td>
         <td>
             <ul>
-                <li th:each="passager : ${avion.passagers}">
+                <li th:each="passager : ${avion.getLstPassagers}">
                     <span th:text="${passager.nom + ' ' + passager.prenom}"></span>
                 </li>
             </ul>
@@ -36,7 +36,11 @@
                 <button class="btn btn-outline-primary" type="submit">Débarquer</button>
             </form>
         </td>
-
+        <td>
+            <form th:action="@{'/avions/' + ${avion.idAvion} + '/deplacer'}" method="post">
+                <button class="btn btn-outline-primary" type="submit">Déplacer vers un autre aéroport</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

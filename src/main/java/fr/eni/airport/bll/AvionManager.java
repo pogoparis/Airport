@@ -19,4 +19,8 @@ public interface AvionManager {
 
     List<Personne> getListePersonnes();
 
+
+    Avion getAvionById(Integer idAvion);
+
+    void supprimerAvion(Integer avionId);
 }

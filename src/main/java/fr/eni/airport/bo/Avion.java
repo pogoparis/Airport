@@ -19,15 +19,15 @@ public class Avion {
     private Integer idAvion;
     private String code;
     private String constructeur;
-    private Integer modele;
+    private Integer model;
 
     @OneToMany(mappedBy = "avion")
-    private List<Personne> passagers = new ArrayList<>();
+    private List<Personne> lstPassagers = new ArrayList<>();
 
     public Avion(String code, String constructeur, Integer modele) {
         this.code = code;
         this.constructeur = constructeur;
-        this.modele = modele;
+        this.model = modele;
     }
 
 }

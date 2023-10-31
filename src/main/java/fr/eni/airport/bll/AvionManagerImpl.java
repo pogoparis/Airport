@@ -30,7 +30,7 @@ public class AvionManagerImpl implements AvionManager{
         Avion avion = avionRepository.findById(avionId).orElse(null);
 
         if (passager != null && avion != null) {
-            avion.getPassagers().add(passager);
+            avion.getLstPassagers().add(passager);
             passager.setAvion(avion);
             avionRepository.save(avion);
             personneRepository.save(passager);
@@ -43,10 +43,10 @@ public class AvionManagerImpl implements AvionManager{
         Avion avion = avionRepository.findById(idAvion).orElse(null);
 
         if (avion != null) {
-            for (Personne passager : avion.getPassagers()) {
+            for (Personne passager : avion.getLstPassagers()) {
                 passager.setAvion(null);
             }
-            avion.getPassagers().clear();
+            avion.getLstPassagers().clear();
             avionRepository.save(avion);
         }
     }
@@ -60,6 +60,16 @@ public class AvionManagerImpl implements AvionManager{
     @Transactional
     public List<Personne> getListePersonnes() {
         return (List<Personne>) personneRepository.findAll();
+    }
+
+    @Override
+    public Avion getAvionById(Integer idAvion) {
+        return avionRepository.findById(idAvion).orElse(null);
+    }
+
+    @Override
+    public void supprimerAvion(Integer avionId) {
+        avionRepository.deleteById(avionId);
     }
 
 
