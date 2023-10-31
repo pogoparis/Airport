@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -15,6 +17,14 @@ public class AvionWS {
 
     @Autowired
     private AvionManager avionManager;
+
+    @GetMapping("/state")
+    public List<Avion> getAvionsState() {
+        List<Avion> avions = avionManager.getAvionsState();
+        avions.forEach(avion -> avion.setLstPassagers(null)); // Exclure les passagers
+        return avions;
+    }
+
 
     @GetMapping("/liste")
     public List<Avion> listeDesAvions() {
@@ -28,7 +38,7 @@ public class AvionWS {
     }
 
     @PostMapping("/{idAvion}/deplacer")
-    public ResponseEntity<String> envoyerAvionVersAutreServeur(@PathVariable Integer idAvion) {
+    public ModelAndView envoyerAvionVersAutreServeur(@PathVariable Integer idAvion, RedirectAttributes redirectAttributes) {
         Avion avion = avionManager.getAvionById(idAvion);
 
         String urlAutreServeur = "http://localhost:8081/avions/recevoir";
@@ -36,7 +46,10 @@ public class AvionWS {
         restTemplate.postForObject(urlAutreServeur, avion, String.class);
 
         avionManager.supprimerAvion(idAvion);
-        return ResponseEntity.ok("Avion envoyé vers l'autre serveur avec succès");
+        redirectAttributes.addFlashAttribute("successMessage", "Avion envoyé vers l'autre serveur avec succès");
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/liste");
+        return modelAndView;
     }
 
 }

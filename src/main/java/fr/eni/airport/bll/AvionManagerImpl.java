@@ -51,6 +51,15 @@ public class AvionManagerImpl implements AvionManager {
         return personnesSansAvion;
     }
 
+    @Override
+    public List<Avion> getAvionsState() {
+        List<Avion> avions = avionRepository.findAll();
+        for (Avion avion : avions) {
+            avion.setLstPassagers(null);
+        }
+        return avions;
+    }
+
 
     @Transactional
     @Override
@@ -83,7 +92,7 @@ public class AvionManagerImpl implements AvionManager {
     @Override
     @Transactional
     public List<Avion> getListeAvions() {
-        return (List<Avion>) avionRepository.findAll();
+        return avionRepository.findAll();
     }
 
     @Override
@@ -114,7 +123,7 @@ public class AvionManagerImpl implements AvionManager {
     }
 
 
-    @Transactional
+/*    @Transactional
     @Override
     public void creerDonneesDeTest() {
         Avion avion1 = new Avion("ABC123", "Boeing", 747);
@@ -137,5 +146,5 @@ public class AvionManagerImpl implements AvionManager {
         personneRepository.save(personne3);
         personneRepository.save(personne4);
         personneRepository.save(personne5);
-    }
+    }*/
 }

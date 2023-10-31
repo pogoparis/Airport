@@ -15,13 +15,14 @@ public interface AvionManager {
 
     List<Avion> getListeAvions();
 
-    void creerDonneesDeTest();
+//    void creerDonneesDeTest();
 
     List<Personne> getListePersonnes();
-
 
     Avion getAvionById(Integer idAvion);
 
     void supprimerAvion(Integer avionId);
     List<Personne> getListePersonnesSansAvion();
+
+    List<Avion> getAvionsState();
 }

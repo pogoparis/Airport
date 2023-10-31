@@ -13,17 +13,11 @@ import java.util.List;
 @Controller
 public class AvionController {
 
-    private boolean donneesDeTestChargees = false;
-
     @Autowired
     private AvionManager avionManager;
 
     @GetMapping("/liste")
     public String afficherListeAvions(Model model) {
-        if (!donneesDeTestChargees) {
-            avionManager.creerDonneesDeTest();
-            donneesDeTestChargees = true;
-        }
 
         List<Personne> toutesLesPersonnes = avionManager.getListePersonnesSansAvion();
         List<Avion> avions = avionManager.getListeAvions();
