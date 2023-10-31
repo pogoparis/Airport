@@ -14,8 +14,6 @@ import java.util.List;
 public class AvionWS {
 
     @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
     private AvionManager avionManager;
 
     @GetMapping("/liste")
@@ -30,19 +28,15 @@ public class AvionWS {
     }
 
     @PostMapping("/{idAvion}/deplacer")
-    public ResponseEntity<String> deplacerAvionVersAutreAeroport(@PathVariable Integer idAvion) {
+    public ResponseEntity<String> envoyerAvionVersAutreServeur(@PathVariable Integer idAvion) {
         Avion avion = avionManager.getAvionById(idAvion);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Avion> request = new HttpEntity<>(avion, headers);
-        ResponseEntity<Avion> response = restTemplate.postForEntity("http://localhost:8081/avions/recevoir", request, Avion.class);
+        String urlAutreServeur = "http://localhost:8081/avions/recevoir";
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(urlAutreServeur, avion, String.class);
 
-        if (response.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.ok("Avion déplacé vers l'autre aéroport");
-        } else {
-            return ResponseEntity.status(response.getStatusCode()).body("Erreur lors du déplacement de l'avion");
-        }
+        avionManager.supprimerAvion(idAvion);
+        return ResponseEntity.ok("Avion envoyé vers l'autre serveur avec succès");
     }
 
 }

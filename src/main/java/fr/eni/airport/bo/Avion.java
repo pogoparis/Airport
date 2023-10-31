@@ -1,9 +1,6 @@
 package fr.eni.airport.bo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
@@ -21,8 +18,8 @@ public class Avion {
     private String constructeur;
     private Integer model;
 
-    @OneToMany(mappedBy = "avion")
-    private List<Personne> lstPassagers = new ArrayList<>();
+    @OneToMany(mappedBy = "avion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Personne> lstPassagers;
 
     public Avion(String code, String constructeur, Integer modele) {
         this.code = code;

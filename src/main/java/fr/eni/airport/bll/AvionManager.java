@@ -23,4 +23,5 @@ public interface AvionManager {
     Avion getAvionById(Integer idAvion);
 
     void supprimerAvion(Integer avionId);
+    List<Personne> getListePersonnesSansAvion();
 }

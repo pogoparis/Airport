@@ -4,14 +4,16 @@ import fr.eni.airport.bo.Avion;
 import fr.eni.airport.bo.Personne;
 import fr.eni.airport.dal.AvionDAO;
 import fr.eni.airport.dal.PersonneDAO;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AvionManagerImpl implements AvionManager{
+public class AvionManagerImpl implements AvionManager {
 
     @Autowired
     AvionDAO avionRepository;
@@ -21,7 +23,34 @@ public class AvionManagerImpl implements AvionManager{
     @Override
     public void creerAvion(Avion avion) {
         avionRepository.save(avion);
+
+        //Liste des passagers
+        List<Personne> passagers = avion.getLstPassagers();
+
+        if (passagers != null) {
+            for (Personne passager : passagers) {
+                passager.setAvion(avion);
+                personneRepository.save(passager);
+            }
+        }
     }
+
+    @Override
+    @Transactional
+    public List<Personne> getListePersonnesSansAvion() {
+
+        List<Personne> toutesLesPersonnes = getListePersonnes();
+
+        // Récupérer les personnes sans avion
+        List<Personne> personnesSansAvion = new ArrayList<>();
+        for (Personne personne : toutesLesPersonnes) {
+            if (personne.getAvion() == null) {
+                personnesSansAvion.add(personne);
+            }
+        }
+        return personnesSansAvion;
+    }
+
 
     @Transactional
     @Override
@@ -56,6 +85,7 @@ public class AvionManagerImpl implements AvionManager{
     public List<Avion> getListeAvions() {
         return (List<Avion>) avionRepository.findAll();
     }
+
     @Override
     @Transactional
     public List<Personne> getListePersonnes() {
@@ -69,7 +99,18 @@ public class AvionManagerImpl implements AvionManager{
 
     @Override
     public void supprimerAvion(Integer avionId) {
-        avionRepository.deleteById(avionId);
+        Avion avion = avionRepository.findById(avionId).orElse(null);
+        if (avion != null) {
+            List<Personne> passagers = avion.getLstPassagers();
+            for (Personne passager : passagers) {
+                passager.setAvion(null);
+                personneRepository.save(passager);
+            }
+            avionRepository.deleteById(avionId);
+        } else {
+            throw new EntityNotFoundException("L'avion avec l'ID " + avionId + " n'existe pas.");
+        }
+
     }
 
 

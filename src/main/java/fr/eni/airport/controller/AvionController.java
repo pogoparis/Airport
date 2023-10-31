@@ -25,7 +25,7 @@ public class AvionController {
             donneesDeTestChargees = true;
         }
 
-        List<Personne> toutesLesPersonnes = avionManager.getListePersonnes();
+        List<Personne> toutesLesPersonnes = avionManager.getListePersonnesSansAvion();
         List<Avion> avions = avionManager.getListeAvions();
 
         model.addAttribute("toutesLesPersonnes", toutesLesPersonnes);
