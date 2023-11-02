@@ -1,7 +1,9 @@
 package fr.eni.airport.ws;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import fr.eni.airport.bll.AvionManager;
 import fr.eni.airport.bo.Avion;
+import fr.eni.airport.bo.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,9 @@ public class AvionWS {
     @Autowired
     private AvionManager avionManager;
 
+    @JsonView(Views.SansPassagers.class)
     @GetMapping("/state")
-    public List<Avion> getAvionsState() {
-        //   avions.forEach(avion -> avion.setLstPassagers(null)); // Exclure les passagers
+    public List<Avion> getAvionsStateWithoutPassagers() {
         return avionManager.getListeAvions();
     }
 
