@@ -15,9 +15,14 @@ public class AvionController {
 
     @Autowired
     private AvionManager avionManager;
+    private Boolean donneesTest = false;
 
     @GetMapping("/liste")
     public String afficherListeAvions(Model model) {
+        if (!donneesTest) {
+            avionManager.creerDonneesDeTest();
+            donneesTest = true;
+        }
 
         List<Personne> toutesLesPersonnes = avionManager.getListePersonnesSansAvion();
         List<Avion> avions = avionManager.getListeAvions();

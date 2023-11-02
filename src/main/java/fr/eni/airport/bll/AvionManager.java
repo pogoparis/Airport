@@ -2,9 +2,7 @@ package fr.eni.airport.bll;
 
 import fr.eni.airport.bo.Avion;
 import fr.eni.airport.bo.Personne;
-
 import java.util.List;
-import java.util.Optional;
 
 public interface AvionManager {
 
@@ -15,7 +13,7 @@ public interface AvionManager {
 
     List<Avion> getListeAvions();
 
-//    void creerDonneesDeTest();
+    void creerDonneesDeTest();
 
     List<Personne> getListePersonnes();
 
@@ -24,5 +22,4 @@ public interface AvionManager {
     void supprimerAvion(Integer avionId);
     List<Personne> getListePersonnesSansAvion();
 
-    List<Avion> getAvionsState();
 }

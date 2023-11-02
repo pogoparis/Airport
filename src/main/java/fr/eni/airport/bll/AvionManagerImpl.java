@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AvionManagerImpl implements AvionManager {
@@ -23,10 +24,7 @@ public class AvionManagerImpl implements AvionManager {
     @Override
     public void creerAvion(Avion avion) {
         avionRepository.save(avion);
-
-        //Liste des passagers
         List<Personne> passagers = avion.getLstPassagers();
-
         if (passagers != null) {
             for (Personne passager : passagers) {
                 passager.setAvion(avion);
@@ -38,28 +36,16 @@ public class AvionManagerImpl implements AvionManager {
     @Override
     @Transactional
     public List<Personne> getListePersonnesSansAvion() {
-
         List<Personne> toutesLesPersonnes = getListePersonnes();
-
-        // Les personnes sans avion
         List<Personne> personnesSansAvion = new ArrayList<>();
+
         for (Personne personne : toutesLesPersonnes) {
-            if (personne.getAvion() == null) {
+            if (Objects.isNull(personne.getAvion())) {
                 personnesSansAvion.add(personne);
             }
         }
         return personnesSansAvion;
     }
-
-    @Override
-    public List<Avion> getAvionsState() {
-        List<Avion> avions = avionRepository.findAll();
-        for (Avion avion : avions) {
-            avion.setLstPassagers(null);
-        }
-        return avions;
-    }
-
 
     @Transactional
     @Override
@@ -83,11 +69,14 @@ public class AvionManagerImpl implements AvionManager {
         if (avion != null) {
             for (Personne passager : avion.getLstPassagers()) {
                 passager.setAvion(null);
+                System.out.println(passager.getNom() + " getAvion => " + passager.getAvion());
+                personneRepository.save(passager);
             }
             avion.getLstPassagers().clear();
             avionRepository.save(avion);
         }
     }
+
 
     @Override
     @Transactional
@@ -98,7 +87,7 @@ public class AvionManagerImpl implements AvionManager {
     @Override
     @Transactional
     public List<Personne> getListePersonnes() {
-        return (List<Personne>) personneRepository.findAll();
+        return personneRepository.findAll();
     }
 
     @Override
@@ -123,7 +112,7 @@ public class AvionManagerImpl implements AvionManager {
     }
 
 
-/*    @Transactional
+    @Transactional
     @Override
     public void creerDonneesDeTest() {
         Avion avion1 = new Avion("ABC123", "Boeing", 747);
@@ -135,7 +124,7 @@ public class AvionManagerImpl implements AvionManager {
         avionRepository.save(avion3);
         avionRepository.save(avion4);
 
-        Personne personne1 = new Personne("Doe", "John", 30);
+        Personne personne1 = new Personne("Dupont", "John", 30);
         Personne personne2 = new Personne("Smith", "Alice", 25);
         Personne personne3 = new Personne("Garcia", "Maria", 28);
         Personne personne4 = new Personne("Chen", "Michael", 32);
@@ -146,5 +135,5 @@ public class AvionManagerImpl implements AvionManager {
         personneRepository.save(personne3);
         personneRepository.save(personne4);
         personneRepository.save(personne5);
-    }*/
+    }
 }

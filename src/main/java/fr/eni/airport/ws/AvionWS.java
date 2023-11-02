@@ -20,9 +20,8 @@ public class AvionWS {
 
     @GetMapping("/state")
     public List<Avion> getAvionsState() {
-        List<Avion> avions = avionManager.getAvionsState();
-        avions.forEach(avion -> avion.setLstPassagers(null)); // Exclure les passagers
-        return avions;
+        //   avions.forEach(avion -> avion.setLstPassagers(null)); // Exclure les passagers
+        return avionManager.getListeAvions();
     }
 
 
@@ -48,8 +47,7 @@ public class AvionWS {
         avionManager.supprimerAvion(idAvion);
         redirectAttributes.addFlashAttribute("successMessage", "Avion envoyé vers l'autre serveur avec succès");
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/liste");
-        return modelAndView;
+        return new ModelAndView("redirect:/liste");
     }
 
 }
